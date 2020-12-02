@@ -1,7 +1,7 @@
 <?php 
 	session_start();
 
-	//$username = "";
+	$username = "";
 	$email    = "";
 	$errors = array(); 
 	$_SESSION['success'] = "";
@@ -24,14 +24,17 @@
 		
 		
 
-	
+		
 				if (empty($name)) { array_push($errors, "name is required"); }
 				if (empty($id_num)) { array_push($errors, "ID number is required"); }
 				if (empty($phone_Num)) { array_push($errors, "surname is required"); }
 				if (empty($address)) { array_push($errors, "Address is required"); } 
 				if (empty($email)) { array_push($errors, "Email is required"); }
 				if (empty($password_1)) { array_push($errors, "Password is required"); }
-				if (empty($password_2)) { array_push($errors, "Password is required"); }
+				if (empty($password_1)) { array_push($errors, "Password is required"); }
+                
+                
+                
                 if (empty($gender)) { array_push($errors, "Gender is required"); }
 
 
@@ -44,22 +47,22 @@
                 }
                 
 		
-		$query1 = "SELECT * FROM user WHERE `email` = '$email'";
+		$query1 = "SELECT * FROM user WHERE `username` = '$username'";
 $result1 = mysqli_query($db,$query1);
 
 if ($result1) {
 
     if (mysqli_num_rows($result1) == 1) {
         while($row = mysqli_fetch_array($result1)) {
-            $user=$row['email'] ;
+            $user=$row['username'] ;
 
 
         }
     }
 }
-if($email==$user)
+if($username==$user)
 {
-    array_push($errors, "email Number already exist, try Again.."); 
+    array_push($errors, "Username Number already exist, try Again.."); 
 }
 		//------------------------------------------------
 		$password=$password_1;
@@ -92,14 +95,14 @@ if (!preg_match("#\W+#", $password)) {
 	
 		if (count($errors) == 0) {
 			$password = md5($password_1);
-			$query = "INSERT INTO user ( name, id_num, phoneNum, address, email, password, gender) 
-					  VALUES('$name', '$id_num', '$phoneNum','$address','$email','$password','$gender')";
+			$query = "INSERT INTO user (username, email, password,name,surname,address,gender,id_num) 
+					  VALUES('$username', '$email', '$password','$name','$surname','$address','$gender','$id_num')";
 			mysqli_query($db, $query);
 
-			$_SESSION['email'] = $email;
+			$_SESSION['username'] = $username;
 			$_SESSION['success'] = "You are now logged in";
 			
-			header('location: index.php');
+			header('location: home.php');
 		}
 
 	}
@@ -108,11 +111,11 @@ if (!preg_match("#\W+#", $password)) {
 
 	// LOGIN USER
 	if (isset($_POST['login_user'])) {
-		$email = mysqli_real_escape_string($db, $_POST['email']);
+		$username = mysqli_real_escape_string($db, $_POST['username']);
 		$password = mysqli_real_escape_string($db, $_POST['password']);
 
-		if (empty($email)) {
-			array_push($errors, "Email is required");
+		if (empty($username)) {
+			array_push($errors, "Username is required");
 		}
 		if (empty($password)) {
 			array_push($errors, "Password is required");
@@ -142,15 +145,15 @@ if (!preg_match("#\W+#", $password)) {
 
 		if (count($errors) == 0) {
 			$password = md5($password);
-			$query = "SELECT * FROM user WHERE email='$email' AND password='$password'";
+			$query = "SELECT * FROM user WHERE username='$username' AND password='$password'";
 			$results = mysqli_query($db, $query);
 
 			if (mysqli_num_rows($results) == 1) {
-				$_SESSION['email'] = $email;
+				$_SESSION['username'] = $username;
 				$_SESSION['success'] = "You are now logged in";
-				header('location: index.php');
+				header('location: home.php');
 			}else {
-				array_push($errors, "Wrong email/password combination");
+				array_push($errors, "Wrong username/password combination");
 			}
 		}
 	}
