@@ -59,16 +59,17 @@
 
 <div class="container" style="padding-top:100px">
 
-<form class="form-signin">
+<form method="post" action="login.php" class="form-signin">
   <h2 class="form-signin-heading">Please log in</h2>
   <label for="inputEmail" class="sr-only">Email address</label>
   <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
   <label for="inputPassword" class="sr-only">Password</label>
   <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+  
   <div class="checkbox">
-    
+		<input type="checkbox" onclick="myFunction()">show password
   </div>
-  <button class="btn btn-lg btn-primary btn-block" type="submit">login</button>
+  <button class="btn btn-lg btn-primary btn-block" type="submit" name="login_user">login</button>
   <p>havent registered yet?</p>
 <li><a href="register.php" class="page-scroll">Register</a></li>
 
@@ -79,6 +80,21 @@
 </div> <!-- /container -->
 
 
+<script>
+	function myFunction()
+	{
+		var x=document.getElementById("myInput");
+		if(x.type=="password")
+		{
+			x.type="text";
+		}
+		else
+		{
+			x.type="password";
+		}
+	}
+	
+	</script>
 
 </body>
 </html>
